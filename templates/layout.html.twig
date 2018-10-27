@@ -1,0 +1,133 @@
+{# app/Resources/views/layout.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}OC Plateforme{% endblock %}</title>
+
+    {% block stylesheets %}
+        {# On charge le CSS de bootstrap depuis le site directement #}
+        <link href="{{ asset('assets/stylesheets/screen.css') }}" media="screen, projection" rel="stylesheet"
+              type="text/css"/>
+        <link href="{{ asset('assets/stylesheets/print.css') }}" media="print" rel="stylesheet" type="text/css"/>
+        <!--[if IE]>
+        <link href="{{ asset('assets/stylesheets/ie.css') }}" media="screen, projection" rel="stylesheet"
+              type="text/css"/>
+        <![endif]-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        {#{% stylesheets '@OCPlatformBundle/Resources/public/css/main.css' %}#}
+            {#<link rel="stylesheet" href="{{ asset_url }}" type="text/css" />#}
+        {#{% endstylesheets %}#}
+
+        <style type="text/css">
+            body {
+                padding-top: 70px;
+            }
+
+            img {
+                width: 100%;
+            }
+
+            .well {
+                background-color: #CCC;
+                padding: 20px;
+            }
+
+            a:active, a:focus {
+                outline: none;
+            }
+
+            .inline-form input {
+                display: inline-block;
+                width: 100px;
+            }
+        </style>
+    {% endblock %}
+</head>
+
+<body>
+<div class="container">
+    {# Si l'utilisateur a un role admin #}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header col-md-2 col-sm-2 col-xs-2">
+            <a class="navbar-brand" href="{{ path('home') }}">My World</a>
+        </div>
+        <div class="container-fluid col-md-2 col-md-offset-8 col-sm-2 col-sm-offset-8 col-xs-2 col-xs-offset-8">
+            <ul class="nav navbar-nav navbar-left pull-right">
+                {% if is_granted("ROLE_ADMIN") %}
+
+                {% endif %}
+                {% if app.user is not null %}
+                   {{ include('component/menu.html.twig') }}
+                {% else %}
+                    <form class="navbar-form navbar-right inline-form" role="form">
+                        <div class="form-group">
+                            <a class="btn btn-primary btn-sm" href="{{ path('fos_user_security_login') }}"><span
+                                        class="glyphicon glyphicon-user"></span> Se connecter</a>
+                        </div>
+                    </form>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="row">
+        <div id="content" class="col-md-12">
+            {% block body %}
+                {# le body du template viens ici #}
+            {% endblock %}
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+        <div class="row">
+            <div class="col-md-12">
+                <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    {#<script src="https://code.jquery.com/jquery-1.12.4.js"></script>#}
+    {#<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>#}
+    <script type="text/javascript">
+        $(function () {
+            $( ".datepicker" ).datepicker(
+                {
+                altField: ".datepicker",
+                closeText: 'Fermer',
+                prevText: 'Précédent',
+                nextText: 'Suivant',
+                currentText: 'Aujourd\'hui',
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
+                dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
+                dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                weekHeader: 'Sem.',
+                dateFormat: 'dd/mm/yy'
+            }
+            );
+        });
+    </script>
+    {#{% javascripts '@OCPlatformBundle/Resources/public/js/actualite.js' %}#}
+        {#<script type="text/javascript" src="{{ asset_url }}"></script>#}
+    {#{% endjavascripts %}#}
+{% endblock %}
+
+</body>
+</html>

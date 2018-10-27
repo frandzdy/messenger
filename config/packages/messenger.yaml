@@ -1,0 +1,10 @@
+framework:
+    messenger:
+        transports:
+            # Uncomment the following line to enable a transport named "amqp"
+             amqp_message: '%env(MESSENGER_TRANSPORT_DSN_MESSAGE)%'
+             amqp: enqueue://default
+
+        routing:
+            # Route your messages to the transports
+             'App\Message\Notification': [amqp_message]

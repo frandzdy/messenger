@@ -1,0 +1,101 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{# Labels #}
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not same as(false) %}
+            {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-' ~ (attr.labelSize|default(12) - attr.radioOption|default(0)) ~ ' control-label required')|trim}) %}
+            {% else %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-' ~ (attr.labelSize|default(12) - attr.radioOption|default(0)) ~ ' control-label')|trim}) %}
+            {% endif %}
+
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="has-error">
+                {% for error in errors %}
+                    <span class="text-danger">
+                        {{
+                        error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                        }}
+                    </span><br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_row %}
+    <div class="form-group no-margins {% if attr.divClass|default() %}{{ attr.divClass }}{% endif %}">
+        {{ form_label(form) }}
+
+        <div class="col-sm-{{ attr.inputSize|default(12) }}
+                {% if attr.noMargin is defined %} no-margins {% endif %}
+                {% if attr.noPadding is defined %} no-padding {% endif %}
+                {% if attr.inherit is defined %} inherit {% endif %}
+                {% if attr.fullWidthChild is defined %} full-width-child {% endif %}"
+        >
+            <div class="input-group {% if attr.divClass|default() %}{{ attr.divClass }}{% endif %}
+                {% if form.vars.errors|length %} has-error{% endif %}"
+            >
+                {% set attr = attr|merge({'class' : (attr.class|default('') ~ ' form-control')|trim}) %}
+
+                {{ form_widget(form, {'attr': attr}) }}
+
+                {% if attr.infoBulle|default() %}
+                    <span class="input-group-addon hand" title="{{ attr.infoMessage|default()|trans }}" data-toggle="tooltip"><i class="fa fa-question-circle"></i></span>
+                {% endif %}
+            </div>
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock form_row %}
+
+{# Champs date #}
+{% block date_widget %}
+    {% spaceless %}
+        <div class='input-group date'>
+            {% set attr = attr|merge({'class' : (attr.class|default('') ~ ' date_input')|trim}) %}
+            {{ parent() }}
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </span>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%  set classes = attr.class|split('') %}
+
+        {%- for child in form %}
+            {% if 'radio_list' in attr.class %}
+                <div class="row no-margins no-padding col-sm-{{ attr.radioColSize|default(6) }}">
+                    <div class="no-padding col-sm-{{ attr.radioSize|default(0) }}">{{- form_widget(child) -}}</div>
+                    <div class="no-padding col-sm-{{ 12 - attr.radioSize|default(0) }}">{{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}</div>
+                </div>
+            {% else %}
+                <div class="row no-margins no-padding col-sm-12">
+                    <div class="pull-left">{{- form_widget(child) -}}</div>
+                    <div class="pull-left">{{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}</div>
+                </div>
+            {% endif %}
+        {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}

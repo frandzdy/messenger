@@ -1,0 +1,30 @@
+<li class="dropdown pull-right">
+
+    <a data-toggle="dropdown" href="#">
+        {% if app.user.image is not null %}
+        <img src="{{ asset(app.user.image.PathView) }}" alt="{{ app.user.image.alt }}"
+             style="width:40px">
+        {% endif %}
+        {{ app.user.username }} <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            {#<a href="{{ path('oc_platform_editUser', {'id' : app.user.id}) }}">#}
+                {#<span class="glyphicon glyphicon-user"></span> Mon profil#}
+            {#</a>#}
+        </li>
+        <li>
+            {#<a href="{{ path('oc_platform_listArcticle', {'id' : app.user.id}) }}">#}
+                {#<span class="glyphicon glyphicon-user"></span> Mon journal#}
+            {#</a>#}
+        </li>
+        <li><a href="#">Chasseurs</a></li>
+        {#<li><a href="{{ path('oc_platform_add') }}">Ajouter une annonce</a></li>#}
+        <li><a href="{{ path('imw_create_person') }}">Créer un utilisateur</a></li>
+        {#<li><a href="{{ path('oc_platform_afficheUser') }}">Liste des utilisateurs</a></li>#}
+        <li class="divider"></li>
+        <li><a href="{{ path('home') }}"><span class="glyphicon glyphicon-cog"></span>
+            Préférences</a></li>
+        <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+    </ul>
+</li>

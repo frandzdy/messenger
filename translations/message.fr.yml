@@ -1,0 +1,16 @@
+lg:
+    person:
+        creation_compte: 'Création du compte utilisateur'
+        passe_temps: 'Passe temps :'
+        civilite: 'Civilité :'
+        departement: 'Département'
+        date_naissance: 'Date de naissance :'
+        preferences: 'Préferences :'
+        preferences_departements: 'Préferences de Départements :'
+        preferences_civilite: 'Préferences Civilité :'
+    connexion:
+        nom_utilisateur: 'Nom d''utilisateur :'
+        mot_de_passe: 'Mot de passe :'
+        se_souvenir_de_moi: 'Se souvenir de moi :'
+        log_in: 'Se connecter'
+lg.connexion.log_in: 'Se connecter'

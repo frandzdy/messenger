@@ -1,0 +1,70 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block form_label -%}
+    {% spaceless %}
+        {% if label is same as(false) %}
+            <div class="{{ block('form_label_class') }}"></div>
+        {% else %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
+            {{- parent() -}}
+        {% endif %}
+    {% endspaceless %}
+{%- endblock form_label %}
+
+{% block form_label_class -%}
+    col-sm-2
+{%- endblock form_label_class %}
+
+
+{#{% block form_label %}#}
+    {#{% spaceless %}#}
+        {#{% if label is not sameas(false) %}#}
+            {#{% if not compound %}#}
+            {#{% set label_attr = label_attr|merge({'for': id}) %}#}
+            {#{% endif %}#}
+
+            {#{% if required %}#}
+                {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-' ~ (attr.labelSize|default(12) - attr.radioOption|default(0)) ~ ' control-label required')|trim}) %}#}
+            {#{% else %}#}
+                {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-' ~ (attr.labelSize|default(12) - attr.radioOption|default(0)) ~ ' control-label')|trim}) %}#}
+            {#{% endif %}#}
+
+            {#{% if label is empty %}#}
+                {#{% set label = name|humanize %}#}
+            {#{% endif %}#}
+            {#<label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>#}
+        {#{% endif %}#}
+    {#{% endspaceless %}#}
+{#{% endblock form_label %}#}
+
+
+{# Champs date #}
+{% block date_widget %}
+    {% spaceless %}
+        <div class='input-group date'>
+            {% set attr = attr|merge({'class' : (attr.class|default('') ~ ' date_input')|trim}) %}
+            {{ parent() }}
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </span>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <div class="has-error">
+                {% for error in errors %}
+                    <span class="text-danger">
+                        {{
+                        error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators')
+                        }}
+                    </span><br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
